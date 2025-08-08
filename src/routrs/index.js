@@ -13,6 +13,7 @@ const itemRouter = require('./itemPakage-r');
 const battlePointRouter = require('./battlePoints-r');
 const postRouter = require('./posts-r');
 const newsRouter = require('./news-R');
+const logBookRouter = require('./logBook-r');
 
 AllRouter.use('/users', userRouter);
 AllRouter.use('/inventories', inventoryRouter);
@@ -26,5 +27,6 @@ AllRouter.use('/items' , itemRouter);
 AllRouter.use('/battle' , battlePointRouter);
 AllRouter.use('/post' , postRouter);
 AllRouter.use('/news' , newsRouter);
+AllRouter.use('/logbook' , logBookRouter);
 
 module.exports = AllRouter; 

@@ -2,7 +2,7 @@ const ItemPackage = require('../models/itemPackages-m');
 
 const getAllPackages = async (req, res) => {
     try {
-        const data = await ItemPackage.find();
+        const data = await ItemPackage.find({isActive: "true"});
         res.status(200).json({ success: true, message: 'Packages fetched', data });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Error fetching packages', error: error.message });
@@ -19,7 +19,6 @@ const getPackageById = async (req, res) => {
     }
 };
 
-
 const createPackage = async (req, res) => {
     try {
         const {
@@ -32,9 +31,7 @@ const createPackage = async (req, res) => {
             isActive
         } = req.body;
 
-        const imageUrl = req.file?.filename;
-
-        console.log(category, name, baseAmount, bonusPercentage, totalAmount, priceUSD, isActive, imageUrl);
+        const imageUrl = req.file? req.file.filename : null;
 
 
         if (!category || !['Pearl', 'Yulong', 'Safanad'].includes(category)) {
@@ -44,7 +41,7 @@ const createPackage = async (req, res) => {
             });
         }
 
-        if (!name || !baseAmount || !bonusPercentage || !totalAmount || !priceUSD) {
+        if (!name || !baseAmount || !totalAmount || !priceUSD) {
             return res.status(404).json({
                 success: false,
                 message: "All Fields are required"
@@ -54,7 +51,7 @@ const createPackage = async (req, res) => {
         if (!imageUrl) {
             return res.status(404).json({
                 success: false,
-                message: "ImageUrl is required"
+                message: "imageUrl is required"
             })
         }
 
@@ -86,7 +83,6 @@ const createPackage = async (req, res) => {
         });
     }
 };
-
 
 const updatePackage = async (req, res) => {
     try {
@@ -148,12 +144,11 @@ const updatePackage = async (req, res) => {
     }
 };
 
-
 const deletePackage = async (req, res) => {
     try {
         const deleted = await ItemPackage.findByIdAndDelete(req.params.id);
         if (!deleted) return res.status(404).json({ success: false, message: 'Package not found' });
-        res.status(200).json({ success: true, message: 'Package deleted', data: deleted });
+        res.status(200).json({ success: true, message: 'Package deleted' });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Error deleting package', error: error.message });
     }
